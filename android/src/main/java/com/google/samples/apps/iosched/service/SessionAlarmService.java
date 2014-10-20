@@ -463,12 +463,19 @@ public class SessionAlarmService extends IntentService
         LOGD(TAG, "# starred sessions in that interval: " + c.getCount());
         String singleSessionId = null;
         String singleSessionRoomId = null;
-        ArrayList<String> starredSessionTitles = new ArrayList<String>();
+        List<String> starredSessionTitles = new ArrayList<String>();
+        List<String> starredSessionRoomNames = new ArrayList<String>();
         while (c.moveToNext()) {
             singleSessionId = c.getString(SessionDetailQuery.SESSION_ID);
             singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);
             starredSessionTitles.add(c.getString(SessionDetailQuery.SESSION_TITLE));
             LOGD(TAG, "-> Title: " + c.getString(SessionDetailQuery.SESSION_TITLE));
+
+            String roomName = c.getString(SessionDetailQuery.ROOM_NAME);
+            if (roomName == null) {
+                roomName = getString(R.string.unknown_room);
+            }
+            starredSessionRoomNames.add(roomName);
         }
         if (starredCount < 1) {
             return;
@@ -544,10 +551,14 @@ public class SessionAlarmService extends IntentService
         NotificationCompat.InboxStyle richNotification = new NotificationCompat.InboxStyle(
                 notifBuilder)
                 .setBigContentTitle(bigContentTitle);
-
-        // Adds starred sessions starting at this time block to the notification.
-        for (int i = 0; i < starredCount; i++) {
-            richNotification.addLine(starredSessionTitles.get(i));
+        if (starredCount == 1 && starredSessionRoomNames.size() > 0) {
+            // Display only the room name given that the session name is already displayed on the notification title
+            richNotification.addLine(starredSessionRoomNames.get(0));
+        } else {
+            // Adds starred sessions starting at this time block to the notification.
+            for (int i = 0; i < starredCount; i++) {
+                richNotification.addLine(getString(R.string.room_session_notification, starredSessionRoomNames.get(i), starredSessionTitles.get(i)));
+            }
         }
         NotificationManager nm = (NotificationManager) getSystemService(
                 Context.NOTIFICATION_SERVICE);
@@ -631,12 +642,14 @@ public class SessionAlarmService extends IntentService
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.ROOM_ID,
+                ScheduleContract.Rooms.ROOM_NAME,
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE
         };
 
         int SESSION_ID = 0;
         int SESSION_TITLE = 1;
         int ROOM_ID = 2;
+        int ROOM_NAME = 3;
     }
 
     public interface SessionsNeedingFeedbackQuery {

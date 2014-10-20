@@ -842,5 +842,8 @@
     <string name="twitter_stream_error">Couldn\'t load the Twitter feed.</string>
     <string name="empty_twitter_stream">No posts found.</string>
     <string name="description_compose">New post</string>
+
+    <string name="room_session_notification" translatable="false">%s: %s</string>
+
 </resources>
 
