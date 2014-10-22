@@ -525,16 +525,9 @@ public class SessionAlarmService extends IntentService
                 .setContentIntent(pi)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true);
-        if (minutesLeft > 5) {
-            notifBuilder.addAction(R.drawable.ic_alarm_holo_dark,
-                    String.format(res.getString(R.string.snooze_x_min), 5),
-                    createSnoozeIntent(sessionStart, intervalEnd, 5));
-        }
-        if (starredCount == 1 && PrefUtils.isAttendeeAtVenue(this)) {
-            notifBuilder.addAction(R.drawable.ic_map_holo_dark,
-                    res.getString(R.string.title_map),
-                    createRoomMapIntent(starredSessionRoomIds.get(0)));
-        }
+
+        addSnoozeAndMapActionsToBuilder(notifBuilder, intervalEnd, starredCount, sessionStart, res, minutesLeft, starredSessionRoomIds.get(0));
+
         String bigContentTitle = getBigContentTitle(starredCount, starredSessionTitles, res, minutesLeft);
         NotificationCompat.InboxStyle richNotification = new NotificationCompat.InboxStyle(
                 notifBuilder)
@@ -552,6 +545,20 @@ public class SessionAlarmService extends IntentService
                 Context.NOTIFICATION_SERVICE);
         LOGD(TAG, "Now showing notification.");
         nm.notify(NOTIFICATION_ID, richNotification.build());
+    }
+
+    private void addSnoozeAndMapActionsToBuilder(NotificationCompat.Builder notifBuilder, long intervalEnd, int starredCount,
+                                                 long sessionStart, Resources res, int minutesLeft, String roomId) {
+        if (minutesLeft > 5) {
+            notifBuilder.addAction(R.drawable.ic_alarm_holo_dark,
+                    String.format(res.getString(R.string.snooze_x_min), 5),
+                    createSnoozeIntent(sessionStart, intervalEnd, 5));
+        }
+        if (starredCount == 1 && PrefUtils.isAttendeeAtVenue(this)) {
+            notifBuilder.addAction(R.drawable.ic_map_holo_dark,
+                    res.getString(R.string.title_map),
+                    createRoomMapIntent(roomId));
+        }
     }
 
     private String getContentText(int starredCount, Resources res, int minutesLeft) {
