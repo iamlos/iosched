@@ -29,6 +29,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
@@ -97,6 +98,7 @@ public class SessionAlarmService extends IntentService
     public static final int FEEDBACK_NOTIFICATION_ID = 101;
 
     private static final String GROUP_KEY_NOTIFY_SESSION = "group_key_notify_session";
+    private static final int STACKED_NOTIFICATIONS_ID_OFFSET = 1;
 
     // pulsate every 1 second, indicating a relatively high degree of urgency
     private static final int NOTIFICATION_LED_ON_MS = 100;
@@ -485,26 +487,55 @@ public class SessionAlarmService extends IntentService
             return;
         }
 
-        PendingIntent pi;
-        if (starredCount == 1) {
-            pi = createPendingIntentForSingleSession(starredSessionIds.get(0));
-        } else {
-            pi = createPendingIntentForMultipleSessions();
-        }
+        NotificationManagerCompat nm = NotificationManagerCompat.from(this);
 
-        final Resources res = getResources();
         int minutesLeft = (int) (sessionStart - currentTime + 59000) / 60000;
         if (minutesLeft < 1) {
             minutesLeft = 1;
         }
 
-        String contentText = createContentText(starredCount, minutesLeft);
+        if (starredCount > 1) {
+            // Create stacked notifications for wearable and summary for handheld
+            for (int sessionIndex = 0; sessionIndex < starredCount; sessionIndex++) {
+                NotificationCompat.Builder notifBuilder = createDefaultBuilder(starredCount, minutesLeft);
+                PendingIntent pi = createPendingIntentForSingleSession(starredSessionIds.get(sessionIndex));
+                notifBuilder.setContentIntent(pi)
+                        .setContentTitle(starredSessionTitles.get(sessionIndex))
+                        .setGroup(GROUP_KEY_NOTIFY_SESSION);
+                addSnoozeAndMapActionsToBuilder(notifBuilder, intervalEnd, 1, sessionStart, minutesLeft, starredSessionRoomIds.get(sessionIndex));
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle(starredSessionTitles.get(0))
+                NotificationCompat.InboxStyle richNotification = createInboxStyleRichNotification(notifBuilder, starredCount, minutesLeft,
+                        starredSessionRoomNames, starredSessionTitles);
+                nm.notify(NOTIFICATION_ID + sessionIndex + STACKED_NOTIFICATIONS_ID_OFFSET, richNotification.build());
+            }
+        }
+
+        // Create a summary notification
+        NotificationCompat.Builder summaryBuilder = createDefaultBuilder(starredCount, minutesLeft);
+        summaryBuilder.setContentIntent(starredCount == 1 ?
+                createPendingIntentForSingleSession(starredSessionIds.get(0))
+                : createPendingIntentForMultipleSessions());
+        summaryBuilder.setContentTitle(starredSessionTitles.get(0));
+        if (starredCount > 1) {
+            // This notification will be the summary and displayed only on the handheld device
+            summaryBuilder.setGroup(GROUP_KEY_NOTIFY_SESSION)
+                    .setGroupSummary(true)
+                    .setLocalOnly(true);
+        }
+
+        addSnoozeAndMapActionsToBuilder(summaryBuilder, intervalEnd, starredCount, sessionStart, minutesLeft, starredSessionRoomIds.get(0));
+
+        NotificationCompat.InboxStyle richNotification = createInboxStyleRichNotification(summaryBuilder, starredCount, minutesLeft,
+                starredSessionRoomNames, starredSessionTitles);
+        nm.notify(NOTIFICATION_ID, richNotification.build());
+    }
+
+    private NotificationCompat.Builder createDefaultBuilder(int starredCount, int minutesLeft) {
+        String contentText = createContentText(starredCount, minutesLeft);
+        return new NotificationCompat.Builder(this)
                 .setContentText(contentText)
                 .setColor(getResources().getColor(R.color.theme_primary))
-                .setTicker(res.getQuantityString(R.plurals.session_notification_ticker,
+                .setTicker(getResources().getQuantityString(R.plurals.session_notification_ticker,
                         starredCount,
                         starredCount))
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
@@ -513,19 +544,8 @@ public class SessionAlarmService extends IntentService
                         SessionAlarmService.NOTIFICATION_LED_ON_MS,
                         SessionAlarmService.NOTIFICATION_LED_OFF_MS)
                 .setSmallIcon(R.drawable.ic_stat_notification)
-                .setContentIntent(pi)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true);
-
-        addSnoozeAndMapActionsToBuilder(notifBuilder, intervalEnd, starredCount, sessionStart, minutesLeft, starredSessionRoomIds.get(0));
-
-        NotificationCompat.InboxStyle richNotification = createInboxStyleRichNotification(notifBuilder, starredCount, minutesLeft,
-                    starredSessionRoomNames, starredSessionTitles);
-
-        NotificationManager nm = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        LOGD(TAG, "Now showing notification.");
-        nm.notify(NOTIFICATION_ID, richNotification.build());
     }
 
     private NotificationCompat.InboxStyle createInboxStyleRichNotification(NotificationCompat.Builder notifBuilder, int starredCount, int minutesLeft, List<String> starredSessionRoomNames, List<String> starredSessionTitles) {
