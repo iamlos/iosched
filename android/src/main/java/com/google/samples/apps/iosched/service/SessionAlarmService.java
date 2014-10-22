@@ -485,21 +485,12 @@ public class SessionAlarmService extends IntentService
             return;
         }
 
-        // Generates the pending intent which gets fired when the user taps on the notification.
-        // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
-        // related to navigation from notifications.
-        Intent baseIntent = new Intent(this, MyScheduleActivity.class);
-        baseIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
-                .addNextIntent(baseIntent);
-
-        // For a single session, tapping the notification should open the session details (b/15350787)
+        PendingIntent pi;
         if (starredCount == 1) {
-            taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
-                    ScheduleContract.Sessions.buildSessionUri(starredSessionIds.get(0))));
+            pi = createPendingIntentForSingleSession(starredSessionIds.get(0));
+        } else {
+            pi = createPendingIntentForMultipleSessions();
         }
-
-        PendingIntent pi = taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
 
         final Resources res = getResources();
         int minutesLeft = (int) (sessionStart - currentTime + 59000) / 60000;
@@ -507,7 +498,7 @@ public class SessionAlarmService extends IntentService
             minutesLeft = 1;
         }
 
-        String contentText = getContentText(starredCount, res, minutesLeft);
+        String contentText = createContentText(starredCount, res, minutesLeft);
 
         NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle(starredSessionTitles.get(0))
@@ -528,7 +519,7 @@ public class SessionAlarmService extends IntentService
 
         addSnoozeAndMapActionsToBuilder(notifBuilder, intervalEnd, starredCount, sessionStart, res, minutesLeft, starredSessionRoomIds.get(0));
 
-        String bigContentTitle = getBigContentTitle(starredCount, starredSessionTitles, res, minutesLeft);
+        String bigContentTitle = createBigContentTitle(starredCount, starredSessionTitles, res, minutesLeft);
         NotificationCompat.InboxStyle richNotification = new NotificationCompat.InboxStyle(
                 notifBuilder)
                 .setBigContentTitle(bigContentTitle);
@@ -547,6 +538,29 @@ public class SessionAlarmService extends IntentService
         nm.notify(NOTIFICATION_ID, richNotification.build());
     }
 
+    private PendingIntent createPendingIntentForSingleSession(String sessionId) {
+        TaskStackBuilder taskBuilder = createBaseTaskStackBuilder();
+        // For a single session, tapping the notification should open the session details (b/15350787)
+        taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
+                ScheduleContract.Sessions.buildSessionUri(sessionId)));
+        return taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
+
+    private PendingIntent createPendingIntentForMultipleSessions() {
+        TaskStackBuilder taskBuilder = createBaseTaskStackBuilder();
+        return taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
+
+    private TaskStackBuilder createBaseTaskStackBuilder() {
+        // Generates the pending intent which gets fired when the user taps on the notification.
+        // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
+        // related to navigation from notifications.
+        Intent baseIntent = new Intent(this, MyScheduleActivity.class);
+        baseIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return TaskStackBuilder.create(this)
+                .addNextIntent(baseIntent);
+    }
+
     private void addSnoozeAndMapActionsToBuilder(NotificationCompat.Builder notifBuilder, long intervalEnd, int starredCount,
                                                  long sessionStart, Resources res, int minutesLeft, String roomId) {
         if (minutesLeft > 5) {
@@ -561,7 +575,7 @@ public class SessionAlarmService extends IntentService
         }
     }
 
-    private String getContentText(int starredCount, Resources res, int minutesLeft) {
+    private String createContentText(int starredCount, Resources res, int minutesLeft) {
         String contentText;
         if (starredCount == 1) {
             contentText = res.getString(R.string.session_notification_text_1, minutesLeft);
@@ -574,7 +588,7 @@ public class SessionAlarmService extends IntentService
         return contentText;
     }
 
-    private String getBigContentTitle(int starredCount, List<String> starredSessionTitles, Resources res, int minutesLeft) {
+    private String createBigContentTitle(int starredCount, List<String> starredSessionTitles, Resources res, int minutesLeft) {
         String bigContentTitle;
         if (starredCount == 1 && starredSessionTitles.size() > 0) {
             bigContentTitle = starredSessionTitles.get(0);
