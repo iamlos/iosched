@@ -55,9 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 /**
  * Background service to handle scheduling of starred session notification via
@@ -469,10 +467,12 @@ public class SessionAlarmService extends IntentService
         List<String> starredSessionTitles = new ArrayList<String>();
         List<String> starredSessionRoomIds = new ArrayList<String>();
         List<String> starredSessionRoomNames = new ArrayList<String>();
+        List<String> starredSessionSpeakers = new ArrayList<String>();
 
         while (c.moveToNext()) {
             starredSessionIds.add(c.getString(SessionDetailQuery.SESSION_ID));
             starredSessionRoomIds.add(c.getString(SessionDetailQuery.ROOM_ID));
+            starredSessionSpeakers.add(c.getString(SessionDetailQuery.SESSION_SPEAKER_NAMES));
 
             starredSessionTitles.add(c.getString(SessionDetailQuery.SESSION_TITLE));
             LOGD(TAG, "-> Title: " + c.getString(SessionDetailQuery.SESSION_TITLE));
@@ -503,9 +503,10 @@ public class SessionAlarmService extends IntentService
                         .setContentTitle(starredSessionTitles.get(sessionIndex))
                         .setGroup(GROUP_KEY_NOTIFY_SESSION);
                 addSnoozeAndMapActionsToBuilder(notifBuilder, intervalEnd, 1, sessionStart, minutesLeft, starredSessionRoomIds.get(sessionIndex));
+                NotificationCompat.BigTextStyle richNotification = createBigTextRichNotification(notifBuilder,
+                        starredSessionSpeakers.get(sessionIndex), starredSessionRoomNames.get(sessionIndex),
+                        starredSessionTitles.get(sessionIndex));
 
-                NotificationCompat.InboxStyle richNotification = createInboxStyleRichNotification(notifBuilder, starredCount, minutesLeft,
-                        starredSessionRoomNames, starredSessionTitles);
                 nm.notify(NOTIFICATION_ID + sessionIndex + STACKED_NOTIFICATIONS_ID_OFFSET, richNotification.build());
             }
         }
@@ -524,10 +525,22 @@ public class SessionAlarmService extends IntentService
         }
 
         addSnoozeAndMapActionsToBuilder(summaryBuilder, intervalEnd, starredCount, sessionStart, minutesLeft, starredSessionRoomIds.get(0));
-
         NotificationCompat.InboxStyle richNotification = createInboxStyleRichNotification(summaryBuilder, starredCount, minutesLeft,
                 starredSessionRoomNames, starredSessionTitles);
+
         nm.notify(NOTIFICATION_ID, richNotification.build());
+    }
+
+    private NotificationCompat.BigTextStyle createBigTextRichNotification(
+            NotificationCompat.Builder notifBuilder, String speakers, String roomName, String sessionTitle) {
+        StringBuilder bigTextBuilder = new StringBuilder()
+                .append(getString(R.string.session_starting_by, speakers))
+                .append('\n')
+                .append(getString(R.string.session_starting_in, roomName));
+        return new NotificationCompat.BigTextStyle(
+                notifBuilder)
+                .setBigContentTitle(sessionTitle)
+                .bigText(bigTextBuilder.toString());
     }
 
     private NotificationCompat.Builder createDefaultBuilder(int starredCount, int minutesLeft) {
@@ -711,6 +724,7 @@ public class SessionAlarmService extends IntentService
         int SESSION_TITLE = 1;
         int ROOM_ID = 2;
         int ROOM_NAME = 3;
+        int SESSION_SPEAKER_NAMES = 4;
     }
 
     public interface SessionsNeedingFeedbackQuery {
