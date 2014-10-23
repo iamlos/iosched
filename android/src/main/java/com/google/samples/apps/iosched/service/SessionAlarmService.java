@@ -717,6 +717,7 @@ public class SessionAlarmService extends IntentService
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.ROOM_ID,
                 ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE
         };
 
