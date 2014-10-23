@@ -497,10 +497,11 @@ public class SessionAlarmService extends IntentService
         if (starredCount > 1) {
             // Create stacked notifications for wearable and summary for handheld
             for (int sessionIndex = 0; sessionIndex < starredCount; sessionIndex++) {
-                NotificationCompat.Builder notifBuilder = createDefaultBuilder(starredCount, minutesLeft);
+                NotificationCompat.Builder notifBuilder = createDefaultBuilder(starredCount);
                 PendingIntent pi = createPendingIntentForSingleSession(starredSessionIds.get(sessionIndex));
                 notifBuilder.setContentIntent(pi)
                         .setContentTitle(starredSessionTitles.get(sessionIndex))
+                        .setContentText(starredSessionRoomNames.get(sessionIndex))
                         .setGroup(GROUP_KEY_NOTIFY_SESSION);
                 addSnoozeAndMapActionsToBuilder(notifBuilder, intervalEnd, 1, sessionStart, minutesLeft, starredSessionRoomIds.get(sessionIndex));
                 NotificationCompat.BigTextStyle richNotification = createBigTextRichNotification(notifBuilder,
@@ -512,11 +513,12 @@ public class SessionAlarmService extends IntentService
         }
 
         // Create a summary notification
-        NotificationCompat.Builder summaryBuilder = createDefaultBuilder(starredCount, minutesLeft);
+        NotificationCompat.Builder summaryBuilder = createDefaultBuilder(starredCount);
         summaryBuilder.setContentIntent(starredCount == 1 ?
                 createPendingIntentForSingleSession(starredSessionIds.get(0))
                 : createPendingIntentForMultipleSessions());
-        summaryBuilder.setContentTitle(starredSessionTitles.get(0));
+        summaryBuilder.setContentTitle(starredSessionTitles.get(0))
+                .setContentText(createContentTextWithRemainingTime(starredCount, minutesLeft));
         if (starredCount > 1) {
             // This notification will be the summary and displayed only on the handheld device
             summaryBuilder.setGroup(GROUP_KEY_NOTIFY_SESSION)
@@ -543,10 +545,8 @@ public class SessionAlarmService extends IntentService
                 .bigText(bigTextBuilder.toString());
     }
 
-    private NotificationCompat.Builder createDefaultBuilder(int starredCount, int minutesLeft) {
-        String contentText = createContentText(starredCount, minutesLeft);
+    private NotificationCompat.Builder createDefaultBuilder(int starredCount) {
         return new NotificationCompat.Builder(this)
-                .setContentText(contentText)
                 .setColor(getResources().getColor(R.color.theme_primary))
                 .setTicker(getResources().getQuantityString(R.plurals.session_notification_ticker,
                         starredCount,
@@ -615,7 +615,7 @@ public class SessionAlarmService extends IntentService
         }
     }
 
-    private String createContentText(int starredCount, int minutesLeft) {
+    private String createContentTextWithRemainingTime(int starredCount, int minutesLeft) {
         String contentText;
         if (starredCount == 1) {
             contentText = getString(R.string.session_notification_text_1, minutesLeft);
