@@ -26,9 +26,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
@@ -529,6 +531,11 @@ public class SessionAlarmService extends IntentService
                 .setContentIntent(pi)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true);
+
+        NotificationCompat.WearableExtender extender = new NotificationCompat.WearableExtender();
+        extender.setBackground(BitmapFactory.decodeResource(res, R.drawable.notification_background));
+        notifBuilder.extend(extender);
+
         if (minutesLeft > 5) {
             notifBuilder.addAction(R.drawable.ic_alarm_holo_dark,
                     String.format(res.getString(R.string.snooze_x_min), 5),
@@ -560,8 +567,8 @@ public class SessionAlarmService extends IntentService
                 richNotification.addLine(getString(R.string.room_session_notification, starredSessionRoomNames.get(i), starredSessionTitles.get(i)));
             }
         }
-        NotificationManager nm = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
+        NotificationManagerCompat nm = NotificationManagerCompat.from(this);
+
         LOGD(TAG, "Now showing notification.");
         nm.notify(NOTIFICATION_ID, richNotification.build());
     }
