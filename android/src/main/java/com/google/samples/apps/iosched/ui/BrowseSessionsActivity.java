@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -34,6 +35,7 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
@@ -493,6 +495,9 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
             menu.removeItem(R.id.menu_wifi);
             menu.removeItem(R.id.menu_debug);
             menu.removeItem(R.id.menu_about);
+            if(!canHandleMapOption()) {
+                menu.removeItem(R.id.menu_map);
+            }
         } else {
             configureStandardMenuItems(menu);
         }
@@ -554,6 +559,10 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
             this.indented = indented;
             this.color = color;
         }
+    }
+
+    private boolean canHandleMapOption() {
+        return !BuildConfig.USE_EXTERNAL_MAPS || ExternalMapActivityBridge.isAvailable(this);
     }
 
     /** Adapter that provides views for our top-level Action Bar spinner. */
