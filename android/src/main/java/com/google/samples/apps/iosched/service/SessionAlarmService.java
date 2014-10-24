@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -546,6 +547,9 @@ public class SessionAlarmService extends IntentService
     }
 
     private NotificationCompat.Builder createDefaultBuilder(int starredCount) {
+        NotificationCompat.WearableExtender extender = new NotificationCompat.WearableExtender();
+        extender.setBackground(BitmapFactory.decodeResource(getResources(), R.drawable.notification_background));
+
         return new NotificationCompat.Builder(this)
                 .setColor(getResources().getColor(R.color.theme_primary))
                 .setTicker(getResources().getQuantityString(R.plurals.session_notification_ticker,
@@ -558,7 +562,8 @@ public class SessionAlarmService extends IntentService
                         SessionAlarmService.NOTIFICATION_LED_OFF_MS)
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .extend(extender);
     }
 
     private NotificationCompat.InboxStyle createInboxStyleRichNotification(NotificationCompat.Builder notifBuilder, int starredCount, int minutesLeft, List<String> starredSessionRoomNames, List<String> starredSessionTitles) {
