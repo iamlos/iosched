@@ -844,6 +844,8 @@
     <string name="description_compose">New post</string>
 
     <string name="room_session_notification" translatable="false">%s: %s</string>
+    <string name="session_starting_by">By %s</string>
+    <string name="session_starting_in">In %s</string>
 
 </resources>
 
