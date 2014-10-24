@@ -41,6 +41,7 @@ import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.BaseMapActivity;
@@ -613,7 +614,7 @@ public class SessionAlarmService extends IntentService
                     String.format(getString(R.string.snooze_x_min), 5),
                     createSnoozeIntent(sessionStart, intervalEnd, 5));
         }
-        if (starredCount == 1 && PrefUtils.isAttendeeAtVenue(this)) {
+        if (!BuildConfig.USE_EXTERNAL_MAPS && starredCount == 1 && PrefUtils.isAttendeeAtVenue(this)) {
             notifBuilder.addAction(R.drawable.ic_map_holo_dark,
                     getString(R.string.title_map),
                     createRoomMapIntent(roomId));
