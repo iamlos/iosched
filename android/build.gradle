@@ -158,8 +158,8 @@ android {
             buildConfigField "String", "FEEDBACK_SURVEY_ID", "\""+droidconuk14_feedback_survey_id+"\""
             buildConfigField "String", "FEEDBACK_URL", "\""+droidconuk14_feedback_url+"\""
             buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\""+uniqueContentIdentifier+"\""
-            buildConfigField "String", "WIFI_SSID", "\"DROIDCONUK\""
-            buildConfigField "String", "WIFI_PASSPHRASE", "\"lolwaitwaht\""
+            buildConfigField "String", "WIFI_SSID", "\"droidconuk\""
+            buildConfigField "String", "WIFI_PASSPHRASE", "\"WhatTheL50\""
 
             buildConfigField "Class<? extends android.app.Fragment>", "SOCIAL_FRAGMENT_CLASS",
                              "com.google.samples.apps.iosched.ui.TwitterSocialFragment.class"
