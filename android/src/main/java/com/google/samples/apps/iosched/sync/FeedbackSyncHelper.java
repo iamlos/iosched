@@ -54,10 +54,10 @@ public class FeedbackSyncHelper {
                 null,
                 null);
         LOGD(TAG, "Number of unsynced feedbacks: " + c.getCount());
-        List<String> questions = new ArrayList<String>();
         List<String> updatedSessions = new ArrayList<String>();
 
         while (c.moveToNext()) {
+            List<String> questions = new ArrayList<String>();
             String sessionId = c.getString(c.getColumnIndex(ScheduleContract.Feedback.SESSION_ID));
 
             questions.add(c.getString(c.getColumnIndex(ScheduleContract.Feedback.SESSION_RATING)));
