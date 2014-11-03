@@ -29,9 +29,6 @@ import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
-/**
- * Created by lwray on 5/8/14.
- */
 public class FeedbackSyncHelper {
     private static final String TAG = makeLogTag(FeedbackSyncHelper.class);
 
@@ -41,7 +38,7 @@ public class FeedbackSyncHelper {
 
     FeedbackSyncHelper(Context context) {
         mContext = context;
-        mEventFeedbackApi = new EventFeedbackApi(context);
+        mEventFeedbackApi = new EventFeedbackApi();
 
     }
 

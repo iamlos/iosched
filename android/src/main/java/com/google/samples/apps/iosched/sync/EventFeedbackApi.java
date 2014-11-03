@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.sync;
 
-import android.content.Context;
-
 import com.google.samples.apps.iosched.Config;
 
 import java.net.HttpURLConnection;
@@ -29,9 +27,6 @@ import com.turbomanage.httpclient.ParameterMap;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
-/**
- * Created by lwray on 5/7/14.
- */
 public class EventFeedbackApi {
     private static final String TAG = makeLogTag(EventFeedbackApi.class);
 
@@ -42,13 +37,6 @@ public class EventFeedbackApi {
     private static final String PARAMETER_SESSION_ID = "objectid";
     private static final String PARAMETER_SURVEY_ID = "surveyId";
     private static final String PARAMETER_REGISTRANT_ID = "registrantKey";
-    private final Context mContext;
-    private final String mUrl;
-
-    public EventFeedbackApi(Context context) {
-        mContext = context;
-        mUrl = Config.FEEDBACK_URL;
-    }
 
     /**
      * Posts a session to the event server.
@@ -72,9 +60,14 @@ public class EventFeedbackApi {
             i++;
         }
 
-        HttpResponse response = httpClient.get(mUrl, parameterMap);
+        HttpResponse response = httpClient.get(Config.FEEDBACK_URL, parameterMap);
 
-        if (response != null && response.getStatus() == HttpURLConnection.HTTP_OK) {
+        if (response == null ) {
+            LOGE(TAG, "Error posting session: HTTP response was null");
+            return false;
+        }
+
+        if( response.getStatus() == HttpURLConnection.HTTP_OK) {
             LOGD(TAG, "Server returned HTTP_OK, so session posting was successful.");
             return true;
         } else {
