@@ -236,6 +236,11 @@
                   android:label="@string/title_map"
                   android:exported="false" />
 
+        <!-- Bridge activity to external feedback app -->
+        <activity android:name=".ui.ExternalFeedbackActivityBridge"
+            android:label="@string/title_map"
+            android:exported="false" />
+
         <!-- TaskStackBuilder proxy activity for widgets and notifications. -->
 
         <activity

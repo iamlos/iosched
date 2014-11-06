@@ -148,6 +148,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
     protected static final int NAVDRAWER_ITEM_SETTINGS = 6;
     protected static final int NAVDRAWER_ITEM_EXPERTS_DIRECTORY = 7;
     protected static final int NAVDRAWER_ITEM_PEOPLE_IVE_MET = 8;
+    protected static final int NAVDRAWER_ITEM_FEEDBACK = 9;
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
     protected static final int NAVDRAWER_ITEM_SEPARATOR = -2;
     protected static final int NAVDRAWER_ITEM_SEPARATOR_SPECIAL = -3;
@@ -162,7 +163,8 @@ public abstract class BaseActivity extends ActionBarActivity implements
             R.string.navdrawer_item_sign_in,
             R.string.navdrawer_item_settings,
             R.string.navdrawer_item_experts_directory,
-            R.string.navdrawer_item_people_ive_met
+            R.string.navdrawer_item_people_ive_met,
+            R.string.session_feedback_submitlink
     };
 
     // icons for navdrawer items (indices must correspond to above array)
@@ -176,6 +178,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
             R.drawable.ic_drawer_settings,
             R.drawable.ic_drawer_experts,
             R.drawable.ic_drawer_people_met,
+            R.drawable.ic_drawer_feedback
     };
 
     // delay to launch nav drawer item, to allow close animation to play
@@ -469,6 +472,10 @@ public abstract class BaseActivity extends ActionBarActivity implements
         // If attendee is on-site, show the People I've Met item
         if (BuildConfig.SUPPORTS_PEER_BADGE_SCANNING && attendeeAtVenue) {
             mNavDrawerItems.add(NAVDRAWER_ITEM_PEOPLE_IVE_MET);
+        }
+
+        if (BuildConfig.CONFERENCE_FEEDBACK_URL != null && !BuildConfig.CONFERENCE_FEEDBACK_URL.isEmpty()) {
+            mNavDrawerItems.add(NAVDRAWER_ITEM_FEEDBACK);
         }
 
         // If the experts directory hasn't expired, show it
@@ -852,6 +859,12 @@ public abstract class BaseActivity extends ActionBarActivity implements
                 break;
             case NAVDRAWER_ITEM_PEOPLE_IVE_MET:
                 intent = new Intent(this, PeopleIveMetActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case NAVDRAWER_ITEM_FEEDBACK:
+                intent = new Intent(this, ExternalFeedbackActivityBridge.class);
+                intent.putExtra(ExternalMapActivityBridge.EXTRA_ORIGINAL_INTENT, getIntent());
                 startActivity(intent);
                 finish();
                 break;
