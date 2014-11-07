@@ -3,4 +3,5 @@
     <string name="question_setup_wifi_after_i_o_start">droidconNL에 오셨습니다! 지금 회의 WiFi를 구성하시겠습니까?</string>
     <string name="question_setup_wifi_before_i_o_start">droidconNL가 다가오고 있습니다. 지금 회의 WiFi를 구성하시겠습니까?</string>
     <string name="welcome_to_google_i_o_app">droidconNL 앱을 시작합니다!</string>
+    <string name="session_calendar_suffix">- droidconNL Android 앱이 추가함</string>
 </resources>

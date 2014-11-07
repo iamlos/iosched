@@ -3,4 +3,5 @@
     <string name="question_setup_wifi_after_i_o_start">droidconNL 在這裡！您想現在配置會議 WiFi 嗎？</string>
     <string name="question_setup_wifi_before_i_o_start">droidconNL 快來了！您想現在配置會議 WiFi 嗎？</string>
     <string name="welcome_to_google_i_o_app">歡迎來到 droidconNL 應用！</string>
+    <string name="session_calendar_suffix">- 由谷歌 droidconNL 安卓應用添加</string>
 </resources>

@@ -3,4 +3,5 @@
     <string name="question_setup_wifi_after_i_o_start">DroidconのLondonを開催します！直ぐに、会議のWiFiを設定しますか？</string>
     <string name="question_setup_wifi_before_i_o_start">DroidconのLondonが始まります！直ぐに、会議のWiFiを設定しますか？</string>
     <string name="welcome_to_google_i_o_app">Droidcon Londonのアプリへようこそ！</string>
+    <string name="session_calendar_suffix"> -  のDroidcon LondonのAndroidアプリで追加</string>
 </resources>

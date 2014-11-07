@@ -7,4 +7,5 @@
     <string name="experts_directory_header_body">These are the people we consider to have worked on high profile successful projects, or have helped others in an outstanding way.</string>
     <string name="experts_directory_header_title">Who are the Experts?</string>
     <string name="map_label_venue" translatable="false">Business Design Center</string>
+    <string name="session_calendar_suffix">- added by Droidcon London Android app</string>
 </resources>

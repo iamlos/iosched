@@ -593,7 +593,7 @@
     <string name="search_label">Sessions</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix">- added by conference app</string>
+    <string name="session_calendar_suffix">- added by Google I/O Android app</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
     <string name="session_details_a11y_session_added">Session added to your schedule</string>

@@ -3,4 +3,5 @@
     <string name="question_setup_wifi_after_i_o_start">O droidconNL chegou! Você gostaria de configurar o WiFi da conferência agora?</string>
     <string name="question_setup_wifi_before_i_o_start">O droidconNL se aproxima! Você gostaria de configurar o WiFi da conferência agora?</string>
     <string name="welcome_to_google_i_o_app">Bem-vindo ao aplicativo droidconNL!</string>
+    <string name="session_calendar_suffix">- adicionado pelo aplicativo Android droidconNL</string>
 </resources>
