@@ -296,10 +296,12 @@ public class SessionAlarmService extends IntentService
             return;
         }
 
+        long currentTime = UIUtils.getCurrentTime(this);
+        String[] whereArgs = { Long.toString(currentTime) };
         final Cursor c = getContentResolver().query(
                 ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
                 SessionsNeedingFeedbackQuery.PROJECTION,
-                SessionsNeedingFeedbackQuery.WHERE_CLAUSE, null, null);
+                SessionsNeedingFeedbackQuery.WHERE_CLAUSE, whereArgs, null);
         if (c == null) {
             return;
         }
@@ -336,7 +338,7 @@ public class SessionAlarmService extends IntentService
         // TODO: fix Wear dismiss integration
         //dismissalIntent.putExtra(KEY_SESSION_ID, sessionId);
         PendingIntent dismissalPendingIntent = PendingIntent
-                .getService(this, (int) new Date().getTime(), dismissalIntent,
+                .getService(this, (int) currentTime, dismissalIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
         String provideFeedbackTicker = res.getString(R.string.session_feedback_notification_ticker);
@@ -746,7 +748,8 @@ public class SessionAlarmService extends IntentService
         int SESSION_TITLE = 1;
 
         public static final String WHERE_CLAUSE =
-                ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK + "=0";
+                ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK + "=0 AND " +
+                ScheduleContract.Sessions.SESSION_START + " < ?";
     }
 
     @Override
