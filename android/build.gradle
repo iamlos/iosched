@@ -205,7 +205,7 @@ android {
             buildConfigField "String", "GCM_SENDER_ID", "\""+droidconnl14_gcm_sender_id+"\""
             buildConfigField "String", "GCM_URL", "\""+droidconnl14_gcm_url+"\""
 
-            buildConfigField "String", "BOOTSTRAP_DATA_TIMESTAMP", "\"Tue, 06 Nov 2014 11:45:00 GMT\""
+            buildConfigField "String", "BOOTSTRAP_DATA_TIMESTAMP", "\"Tue, 14 Nov 2014 11:45:00 GMT\""
             buildConfigField "String", "CONFERENCE_FEEDBACK_URL", "\""+droidconnl14_conference_feedback_url+"\""
             buildConfigField "String", "CONFERENCE_GAME_PACKAGE_NAME", "\"\""
             buildConfigField "String", "CONFERENCE_HASHTAG", "\"#droidconNL\""
