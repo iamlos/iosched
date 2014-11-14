@@ -216,8 +216,8 @@ android {
             buildConfigField "String", "FEEDBACK_SURVEY_ID", "\""+droidconnl14_feedback_survey_id+"\""
             buildConfigField "String", "FEEDBACK_URL", "\""+droidconnl14_feedback_url+"\""
             buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\""+uniqueContentIdentifier+"\""
-            buildConfigField "String", "WIFI_SSID", "\"DROIDCONNL\""
-            buildConfigField "String", "WIFI_PASSPHRASE", "\"lolwaitwaht\""
+            buildConfigField "String", "WIFI_SSID", "\"Casa400-Hotel\""
+            buildConfigField "String", "WIFI_PASSPHRASE", "null"
 
             buildConfigField "Class<? extends android.app.Fragment>", "SOCIAL_FRAGMENT_CLASS",
                              "com.google.samples.apps.iosched.ui.TwitterSocialFragment.class"
