@@ -4,4 +4,5 @@
     <string name="question_setup_wifi_before_i_o_start">droidconNLが始まります！直ぐに、会議のWiFiを設定しますか？</string>
     <string name="welcome_to_google_i_o_app">droidconNLのアプリへようこそ！</string>
     <string name="session_calendar_suffix"> -  のdroidconNLのAndroidアプリで追加</string>
+    <string name="description_setup_wifi_body">あなたは直接参加しているので、会議のWi-Fiネットワークにアクセスするように、このデバイスを設定することができます。今お使いのWi-Fiを設定して頂ければ、ネットワークの混雑を防止するのに役立ちます。</string>
 </resources>

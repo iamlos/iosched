@@ -5,4 +5,5 @@
     <string name="question_setup_wifi_before_i_o_start">droidconNL 快到了！你想现在配置会议的无线网络吗？</string>
     <string name="welcome_to_google_i_o_app">欢迎来到 droidconNL 应用程序！</string>
     <string name="session_calendar_suffix"> - 由谷歌 droidconNL 的Andr​​oid应用程序附加</string>
+    <string name="description_setup_wifi_body">既然你亲自出席，我们可以设置这设备访问会议的Wi-Fi网络。通过现在配置你的无线网络，你会帮助防止网络拥塞</string>
 </resources>

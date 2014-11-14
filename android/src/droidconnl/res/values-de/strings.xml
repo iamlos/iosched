@@ -4,4 +4,5 @@
     <string name="question_setup_wifi_before_i_o_start">droidconNL steht vor der Tür! Möchten Sie die WiFi-Konferenz jetzt konfigurieren?</string>
     <string name="welcome_to_google_i_o_app">Willkommen auf der droidconNL-App!</string>
     <string name="session_calendar_suffix">- hinzugefügt von droidconNL Android App</string>
+    <string name="description_setup_wifi_body">Da Sie persönlich teilnehmen, können wir dieses Gerät so einrichten, dass es Zugriff auf das Konferenz-Wi-Fi-Netzwerk bekommt. Indem Sie Ihr Wi-Fi jetzt konfigurieren, helfen Sie dabei, eine Netzwerküberlastung zu verhindern.</string>
 </resources>

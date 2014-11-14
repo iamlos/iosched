@@ -4,4 +4,5 @@
     <string name="question_setup_wifi_before_i_o_start">Конференция droidconNL скоро начнётся! Вы хотите настроить доступ к сети Wi-Fi конференции сейчас?</string>
     <string name="welcome_to_google_i_o_app">Добро пожаловать в приложение droidconNL!</string>
     <string name="session_calendar_suffix">- добавлено приложением droidconNL для Android</string>
+    <string name="description_setup_wifi_body">Поскольку вы посещаете конференцию лично, мы можем настроить доступ этого устройства к сети Wi-Fi конференции сейчас. Настроив ваш Wi-Fi сейчас, вы поможете предотвратить перегрузку сети.</string>
 </resources>
