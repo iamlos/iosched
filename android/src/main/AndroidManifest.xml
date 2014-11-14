@@ -18,8 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.google.samples.apps.iosched"
-    android:versionCode="201414"
-    android:versionName="2014.14"
+    android:versionCode="201415"
+    android:versionName="2014.15"
     android:installLocation="auto">
 
     <uses-sdk
