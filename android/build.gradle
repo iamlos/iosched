@@ -53,8 +53,8 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            runProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
+            minifyEnabled true
+            proguardFile file('proguard-project.txt')
             signingConfig signingConfigs.release
         }
     }
@@ -70,10 +70,9 @@ android {
     productFlavors { 
         io2014 {
             applicationId = "com.google.samples.apps.iosched"
-            uniqueContentIdentifier = "iosched2014"
 
             manifestPlaceholders = [
-                    uniqueContentIdentifier:uniqueContentIdentifier,
+                    uniqueContentIdentifier:"iosched2014",
                     mapsApiKey:""
             ]
 
@@ -105,7 +104,7 @@ android {
             buildConfigField "String", "FEEDBACK_API_KEY", "\"\""
             buildConfigField "String", "FEEDBACK_SURVEY_ID", "\"\""
             buildConfigField "String", "FEEDBACK_URL", "\"\""
-            buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\""+uniqueContentIdentifier+"\""
+            buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\"iosched2014\""
             buildConfigField "String", "WIFI_SSID", "\"IO2014\""
             buildConfigField "String", "WIFI_PASSPHRASE", "\"letsdothis\""
 
@@ -125,9 +124,8 @@ android {
 
         droidconuk {
             applicationId = "com.conferenceengineer.android.iosched.event1002"
-            uniqueContentIdentifier = "event1002"
             manifestPlaceholders = [
-                    uniqueContentIdentifier:uniqueContentIdentifier,
+                    uniqueContentIdentifier:"event1002",
                     mapsApiKey:droidconuk14_android_maps_api_key
             ]
 
@@ -159,7 +157,7 @@ android {
             buildConfigField "String", "FEEDBACK_API_KEY", "\""+droidconuk14_feedback_api_key+"\""
             buildConfigField "String", "FEEDBACK_SURVEY_ID", "\""+droidconuk14_feedback_survey_id+"\""
             buildConfigField "String", "FEEDBACK_URL", "\""+droidconuk14_feedback_url+"\""
-            buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\""+uniqueContentIdentifier+"\""
+            buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\"event1002\""
             buildConfigField "String", "WIFI_SSID", "\"droidconuk\""
             buildConfigField "String", "WIFI_PASSPHRASE", "\"WhatTheL50\""
 
@@ -181,9 +179,8 @@ android {
 
         droidconnl {
             applicationId = "com.conferenceengineer.android.iosched.event1208"
-            uniqueContentIdentifier = "event1208"
             manifestPlaceholders = [
-                    uniqueContentIdentifier:uniqueContentIdentifier,
+                    uniqueContentIdentifier:"event1208",
                     mapsApiKey:droidconnl14_android_maps_api_key
             ]
 
@@ -215,7 +212,7 @@ android {
             buildConfigField "String", "FEEDBACK_API_KEY", "\""+droidconnl14_feedback_api_key+"\""
             buildConfigField "String", "FEEDBACK_SURVEY_ID", "\""+droidconnl14_feedback_survey_id+"\""
             buildConfigField "String", "FEEDBACK_URL", "\""+droidconnl14_feedback_url+"\""
-            buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\""+uniqueContentIdentifier+"\""
+            buildConfigField "String", "UNIQUE_CONTENT_IDENTIFIER", "\"event1208\""
             buildConfigField "String", "WIFI_SSID", "\"Casa400-Hotel\""
             buildConfigField "String", "WIFI_PASSPHRASE", "null"
 
