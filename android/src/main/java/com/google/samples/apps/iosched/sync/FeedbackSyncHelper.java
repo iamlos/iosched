@@ -57,6 +57,7 @@ public class FeedbackSyncHelper {
             List<String> questions = new ArrayList<String>();
             String sessionId = c.getString(c.getColumnIndex(ScheduleContract.Feedback.SESSION_ID));
 
+            List<String> questions = new ArrayList<String>();
             questions.add(c.getString(c.getColumnIndex(ScheduleContract.Feedback.SESSION_RATING)));
             questions.add(c.getString(c.getColumnIndex(ScheduleContract.Feedback.ANSWER_RELEVANCE)));
             questions.add(c.getString(c.getColumnIndex(ScheduleContract.Feedback.ANSWER_CONTENT)));
